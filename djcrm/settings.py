@@ -9,6 +9,7 @@ env = environ.Env(
 
 # environ.Env.read_env()
 READ_DOT_ENV_FILE = env.bool('READ_DOT_ENV_FILE', default=False)
+
 if READ_DOT_ENV_FILE:
     environ.Env.read_env()
 
