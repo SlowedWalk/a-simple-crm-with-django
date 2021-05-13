@@ -8,7 +8,7 @@ env = environ.Env(
 # reading .env file
 
 # environ.Env.read_env()
-READ_DOT_ENV_FILE = env.bool('READ_DOT_ENV_FILE', default=False)
+READ_DOT_ENV_FILE = env.bool('READ_DOT_ENV_FILE', default=True)
 
 if READ_DOT_ENV_FILE:
     environ.Env.read_env()
@@ -23,7 +23,7 @@ SECRET_KEY = env('SECRET_KEY')
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -35,12 +35,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     # Third party apps
     'crispy_forms',
     'crispy_tailwind',
 
-    #Locak apps
+    # Locak apps
     'leads',
     'agents',
 ]
@@ -84,7 +84,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': env("DB_NAME"),
-        'USER': env("DB_USER"), 
+        'USER': env("DB_USER"),
         'PASSWORD': env("DBPASSWORD"),
         'HOST': env("DB_HOST"),
         'PORT': env("DB_PORT"),
@@ -152,7 +152,10 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_HSTS_SECONDS = 31536000 # 1 year
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = "DENY"
+
+    ALLOWED_HOSTS = ['*']
+

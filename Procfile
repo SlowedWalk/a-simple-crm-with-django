@@ -1,2 +1,2 @@
-release: bash runserver.sh
+release: bash ./runserver.sh
 web: gunicorn djcrm.wsgi --log-file -
