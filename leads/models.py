@@ -2,11 +2,9 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
-
 
 class User(AbstractUser):
-    is_organiser = models.BooleanField(default=True)
+    is_organisor = models.BooleanField(default=True)
     is_agent = models.BooleanField(default=False)
 
 
@@ -15,6 +13,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.email
+
+
+class LeadManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()
 
 
 class Lead(models.Model):
@@ -39,9 +42,26 @@ class Lead(models.Model):
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
     email = models.EmailField()
+    profile_picture = models.ImageField(blank=True, null=True, upload_to="profile_pictures/")
+    converted_date = models.DateTimeField(blank=True, null=True)
+    # objects = LeadManager()
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+
+def handle_upload_follow_ups(instance, filename):
+    return f"leads_followups/lead_{instance.lead.pk}/{filename}"
+
+
+class FollowUp(models.Model):
+    lead = models.ForeignKey(Lead, related_name="followups" ,on_delete=models.CASCADE)
+    date_added = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(blank=True, null=True)
+    file = models.FileField(blank=True, null=True, upload_to=handle_upload_follow_ups)
+
+    def __str__(self):
+        return f"{self.lead.first_name} {self.lead.first_name}"
 
 
 class Agent(models.Model):

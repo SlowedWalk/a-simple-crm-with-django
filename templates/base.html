@@ -1,21 +1,88 @@
+{% load tailwind_tags %}
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DJCRM</title>
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body>
+    {% tailwind_css %}
+    <!-- <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"> -->
+  </head>
+  <body>
     <div class="max-w-7xl mx-auto">
-        {% include 'navbar.html' %}
-        {% include 'messages.html' %}
-        {% block content %}
-        {% endblock content %}
+      {% if messages %} {% for message in messages %}
+      <div
+        class="
+          p-4
+          border-l-4
+          {%
+          if
+          message.tags
+          ==
+          'success'
+          %}
+          bg-green-50
+          border-green-400
+          {%
+          elif
+          message.tags
+          ==
+          'info'
+          %}
+          bg-blue-50
+          border-blue-400
+          {%
+          elif
+          message.tags
+          ==
+          'warning'%}
+          bg-yellow-50
+          border-yellow-400
+          {%
+          else
+          %}
+          bg-red-50
+          border-red-400
+        "
+      >
+        <p
+          class="
+            text-sm
+            {%
+            if
+            message.tags
+            ==
+            'success'
+            %}
+            text-green-700
+            {%
+            elif
+            message.tags
+            ==
+            'info'
+            %}
+            text-blue-700
+            {%
+            elif
+            message.tags
+            ==
+            'warning'%}
+            text-yellow-700
+            {%
+            else
+            %}
+            text-red-700
+          "
+        >
+          {{ message }}
+        </p>
+      </div>
+      {% endfor %} {% endif %} {% include 'navbar.html' %} {% block content %}
+      {% endblock content %}
     </div>
     {% include "scripts.html" %}
-</body>
+  </body>
 </html>
